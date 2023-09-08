@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+  {% if category %}
+    {{category.description|truncatewords:155}}
+  {% else %}
+   welcome to infinte store
+{% endif %}
+  {% endblock %}
+{% block title %}
+ {% if category %}
+   {{category.name}}  - Infinte store
+ {% else %}
+   See our new collections - Infinte store
+{% endif %}
+  {% endblock %}
+{% block content %}
+{% if category %}
+<div  >
+    <div class="row my_row_class">
+        <div class="mx_auto">
+        <p>     <a  href="{% url 'shopApp:AllProdCat'  %}">our product collections</a></p>
+</div>
+    </div>
+</div>
+{% endif %}
+{% if category %}
+<div class="mx_auto">
+     <img class="my_image" src="{{ category.image.url }}" width="=2000px" height="300px"  alt="{{category.name}}">
+
+</div>
+<br>
+<div >
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify ">{{category.description}}</p>
+</div>
+ {% else %}
+<div >
+     <img class="my_image my_image_padding " src="{% static 'img/Banner.png' %}" alt="our products">
+
+</div>
+<br>
+<div >
+    <h1 class="text-center my_title">Our product collections</h1>
+    <p class="text-justify">Plants are eukaryotes, predominantly photosynthetic, that form the kingdom Plantae. Many are multicellular. Historically, the plant kingdom encompassed all living things that were not animals, and included algae and fungi. All current definitions exclude the fungi and some of the algae. By one definition, plants form the clade Viridiplantae (Latin for "green plants") which consists of the green algae and the embryophytes or land plants. The latter include hornworts, liverworts, mosses, lycophytes, ferns, conifers and other gymnosperms, and flowering plants. A definition based on genomes includes the Viridiplantae, along with the red algae and the glaucophytes, in the clade Archaeplastida.
+
+Green plants obtain most of their energy from sunlight, using chloroplasts derived from endosymbiosis with cyanobacteria. Chloroplasts perform photosynthesis using the pigment chlorophyll, which gives them their green colour. Some plants are parasitic and have lost the ability to produce normal amounts of chlorophyll or to photosynthesize. Plants are characterized by sexual reproduction and alternation of generations, but asexual reproduction is also common.
+
+There are about 380,000 known species of plants, of which the majority, some 260,000, produce seeds. Green plants provide a substantial proportion of the world's molecular oxygen and are the basis of most of Earth's ecosystems. Grain, fruit, and vegetables are basic human foods and have been domesticated for millennia. Plants have many cultural and other uses, such as ornaments, building materials, writing materials, and, in great variety, they have been the source of medicines. The scientific study of plants is known as botany, a branch of biology.</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in product.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4 "  >
+
+            <div class="card text-center" style="min-width:18rem;">
+                 <a href="{{ product.get_url}}"> <img  class="card-img-top my_image"src="{{ product.image.url }}" height="600px"  alt="{{product.name}}"></a>
+                <div class="card-body">
+                
+
+                <h4  >{{product.name}}</h4>
+                <p >{{product.price}}</p>
+                    </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+         {% if product.paginator.num_pages > 1  %}
+
+
+    <hr>
+    <div class="text-center">
+       {% for pg in product.paginator.page_range %}
+        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if product.number == pg %} active {% endif  %}">{{pg}}</a>
+           {% endfor %}
+         </div>
+         {% endif  %}
+    </div>
+    <br>
+</div>
+{% endblock %}
